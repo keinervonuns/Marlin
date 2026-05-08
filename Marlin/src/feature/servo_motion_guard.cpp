@@ -26,9 +26,9 @@ namespace servo_motion_guard {
       // the real final toolhead location, not an in-flight state.
       planner.synchronize();
 
-      if (in_blocked_zone(motion.current_position.x, motion.current_position.y)) {
+      if (in_blocked_zone(motion.position.x, motion.position.y)) {
         // Auto-relocate to the wait point before allowing servo-down.
-        motion.destination = motion.current_position;
+        motion.destination = motion.position;
         motion.destination.x = SERVO0_WAIT_POS_X;
         motion.destination.y = SERVO0_WAIT_POS_Y;
         SERIAL_ECHOLNPGM("Servo down: moving to waiting position first");
@@ -46,7 +46,7 @@ namespace servo_motion_guard {
     pending_feedrate = fr_mm_s;
     pending_move = true;
 
-    dest = motion.current_position;
+    dest = motion.position;
     dest.x = SERVO0_WAIT_POS_X;
     dest.y = SERVO0_WAIT_POS_Y;
 

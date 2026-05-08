@@ -18,7 +18,7 @@
  *   F<mm/min>  Optional move feedrate
  */
 void GcodeSuite::M820() {
-  if (!MOTION_CONDITIONS) return;
+  if (motion.gcode_motion_ignored()) return;
 
   if (!parser.seenval('S')) {
     SERIAL_ERROR_MSG("M820 requires S<index>");
@@ -41,7 +41,7 @@ void GcodeSuite::M820() {
   const float tx = GRID_INDEX_X_OFFSET + gx * GRID_INDEX_X_SPACING,
               ty = GRID_INDEX_Y_OFFSET + gy * GRID_INDEX_Y_SPACING;
 
-  motion.destination = motion.current_position;
+  motion.destination = motion.position;
   motion.destination.x = motion.raw_x(tx);
   motion.destination.y = motion.raw_y(ty);
 

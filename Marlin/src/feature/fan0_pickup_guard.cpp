@@ -22,8 +22,8 @@ namespace fan0_pickup_guard {
     const float tx = GRID_INDEX_X_OFFSET + gx * GRID_INDEX_X_SPACING,
                 ty = GRID_INDEX_Y_OFFSET + gy * GRID_INDEX_Y_SPACING;
 
-    return near_position(motion.logical_x(motion.current_position.x), tx)
-        && near_position(motion.logical_y(motion.current_position.y), ty);
+    return near_position(motion.logical_x(motion.position.x), tx)
+      && near_position(motion.logical_y(motion.position.y), ty);
   }
 
   static bool at_allowed_pickup_position() {
@@ -54,8 +54,8 @@ namespace fan0_pickup_guard {
   bool move_allowed(const xyze_pos_t &dest) {
     if (!m810_active) return true;
 
-    if (near_position(motion.logical_x(dest.x), motion.logical_x(motion.current_position.x))
-      && near_position(motion.logical_y(dest.y), motion.logical_y(motion.current_position.y)))
+    if (near_position(motion.logical_x(dest.x), motion.logical_x(motion.position.x))
+      && near_position(motion.logical_y(dest.y), motion.logical_y(motion.position.y)))
       return true;
 
     SERIAL_ERROR_MSG("Move blocked while M810 pickup cycle is active");

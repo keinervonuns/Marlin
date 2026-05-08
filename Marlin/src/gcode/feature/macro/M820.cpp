@@ -22,7 +22,7 @@
 
 #include "../../../inc/MarlinConfig.h"
 
-#if ENABLED(GCODE_MACROS)
+#if ENABLED(GCODE_MACROS) && DISABLED(GRID_INDEX_MOVE)
 
 #include "../../gcode.h"
 #include "../../queue.h"
@@ -48,4 +48,4 @@ void GcodeSuite::M820(const bool withoutEcho/*=true*/) {
   if (!some) SERIAL_ECHOLNPGM("None");
 }
 
-#endif // GCODE_MACROS
+#endif // GCODE_MACROS && !GRID_INDEX_MOVE

@@ -27,6 +27,7 @@
 #include "../../gcode.h"
 #include "../../queue.h"
 #include "../../parser.h"
+#include "../../../feature/fan0_pickup_guard.h"
 
 /**
  * M810 - M819: Set/execute a G-code macro.
@@ -56,12 +57,25 @@ void GcodeSuite::M810_819() {
   else {
     // Execute a macro
     char * const cmd = gcode.macros[index];
-    if (strlen(cmd)) process_subcommands_now(cmd);
+    if (strlen(cmd)) {
+      #if ENABLED(FAN0_PICKUP_GUARD)
+        const bool is_pickup_macro = index == 0;
+        if (is_pickup_macro) fan0_pickup_guard::on_m810_start();
+      #endif
+
+      process_subcommands_now(cmd);
+
+      #if ENABLED(FAN0_PICKUP_GUARD)
+        if (is_pickup_macro) fan0_pickup_guard::on_m810_end();
+      #endif
+    }
   }
 }
 
 void GcodeSuite::M810_819_report(const bool forReplay/*=true*/) {
-  M820(forReplay);
+  #if DISABLED(GRID_INDEX_MOVE)
+    M820(forReplay);
+  #endif
 }
 
 #endif // GCODE_MACROS

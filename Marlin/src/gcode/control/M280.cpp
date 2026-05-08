@@ -27,6 +27,7 @@
 #include "../gcode.h"
 #include "../../module/servo.h"
 #include "../../module/planner.h"
+#include "../../feature/servo_motion_guard.h"
 
 /**
  * M280: Get or set servo position.
@@ -47,6 +48,9 @@ void GcodeSuite::M280() {
     if (parser.seenval('S')) {
       const int anew = parser.value_int();
       if (anew >= 0) {
+        #if ENABLED(SERVO0_MOTION_GUARD)
+          if (servo_index == 0 && !servo_motion_guard::allow_servo0_set(anew)) return;
+        #endif
         #if ENABLED(POLARGRAPH)
           if (parser.seenval('T')) { // (ms) Total duration of servo move
             const int16_t t = constrain(parser.value_int(), 0, 10000);
@@ -61,6 +65,9 @@ void GcodeSuite::M280() {
           }
         #endif // POLARGRAPH
         servo[servo_index].move(anew);
+        #if ENABLED(SERVO0_MOTION_GUARD)
+          if (servo_index == 0) servo_motion_guard::on_servo0_set(anew);
+        #endif
       }
       else
         servo[servo_index].detach();

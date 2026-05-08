@@ -25,6 +25,7 @@
 #if HAS_FAN
 
 #include "../gcode.h"
+#include "../../feature/fan0_pickup_guard.h"
 #include "../../module/motion.h"
 #include "../../module/temperature.h"
 
@@ -87,6 +88,10 @@ void GcodeSuite::M106() {
     speed = parser.value_ushort();
 
   TERN_(FOAMCUTTER_XYUV, speed *= 2.55f); // Get command in % of max heat
+
+  #if ENABLED(FAN0_PICKUP_GUARD)
+    if (pfan == 0 && !fan0_pickup_guard::allow_fan0_speed(speed)) return;
+  #endif
 
   // Set speed, with constraint
   thermalManager.set_fan_speed(pfan, speed);

@@ -22,6 +22,8 @@
 
 #include "../gcode.h"
 #include "../../module/motion.h"
+#include "../../feature/fan0_pickup_guard.h"
+#include "../../feature/servo_motion_guard.h"
 
 #include "../../MarlinCore.h"
 
@@ -62,6 +64,14 @@ void GcodeSuite::G0_G1(TERN_(HAS_FAST_MOVES, const bool fast_move/*=false*/)) {
   #endif
 
   get_destination_from_command();                       // Get X Y [Z[I[J[K]]]] [E] F (and set cutter power)
+
+  #if ENABLED(FAN0_PICKUP_GUARD)
+    if (!fan0_pickup_guard::move_allowed(motion.destination)) return;
+  #endif
+
+  #if ENABLED(SERVO0_MOTION_GUARD)
+    servo_motion_guard::move_redirected(motion.destination, motion.feedrate_mm_s);
+  #endif
 
   #ifdef G0_FEEDRATE
     if (fast_move) {

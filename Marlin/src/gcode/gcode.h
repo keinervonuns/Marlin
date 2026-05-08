@@ -1237,7 +1237,13 @@ private:
   #if ENABLED(GCODE_MACROS)
     static void M810_819();
     static void M810_819_report(const bool forReplay=true);
-    static void M820(const bool withoutEcho=true);
+    #if DISABLED(GRID_INDEX_MOVE)
+      static void M820(const bool withoutEcho=true);
+    #endif
+  #endif
+
+  #if ENABLED(GRID_INDEX_MOVE)
+    static void M820();
   #endif
 
   #if HAS_BED_PROBE

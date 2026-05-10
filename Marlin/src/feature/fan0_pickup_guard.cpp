@@ -35,12 +35,14 @@ namespace fan0_pickup_guard {
   }
 
   bool allow_fan0_speed(const uint16_t speed) {
-    if (speed) {
+    // In this hardware profile, pickup state is FAN0 S0.
+    // Guard only that state to indices FAN0_PICKUP_MIN_INDEX..MAX_INDEX.
+    if (speed == 0) {
       planner.synchronize();
       motion.set_current_from_steppers_for_axis(ALL_AXES_ENUM);
     }
 
-    if (!speed || at_allowed_pickup_position()) return true;
+    if (speed != 0 || at_allowed_pickup_position()) return true;
 
     SERIAL_ERROR_MSG(
       "FAN0 pickup only allowed at grid positions ",

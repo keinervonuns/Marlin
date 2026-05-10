@@ -2008,7 +2008,7 @@
 #define GRID_INDEX_MOVE
 #if ENABLED(GRID_INDEX_MOVE)
   #define GRID_INDEX_X_OFFSET   7.0f   // (mm)
-  #define GRID_INDEX_Y_OFFSET  11.0f   // (mm)
+  #define GRID_INDEX_Y_OFFSET  16.0f   // (mm) +5mm start offset in Y
   #define GRID_INDEX_X_SPACING 71.3f   // (mm)
   #define GRID_INDEX_Y_SPACING 96.2f   // (mm)
   #define GRID_INDEX_X_COUNT     11    // positions in X
@@ -2475,7 +2475,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60) }
+#define HOMING_FEEDRATE_MM_M { (100*60), (100*60) }
 
 // Edit homing feedrates with M210 and MarlinUI menu items
 //#define EDITABLE_HOMING_FEEDRATE

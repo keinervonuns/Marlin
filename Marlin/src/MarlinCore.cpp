@@ -244,6 +244,10 @@
   #include "feature/stepper_driver_safety.h"
 #endif
 
+#if ENABLED(FAN0_PICKUP_GUARD)
+  #include "feature/fan0_pickup_guard.h"
+#endif
+
 #if ENABLED(PSU_CONTROL)
   #include "feature/power.h"
 #endif
@@ -431,6 +435,10 @@ void Marlin::startOrResumeJob() {
  *  - Pulse FET_SAFETY_PIN if it exists
  */
 void Marlin::manage_inactivity(const bool no_stepper_sleep/*=false*/) {
+
+  #if ENABLED(FAN0_PICKUP_GUARD)
+    fan0_pickup_guard::monitor_and_latch();
+  #endif
 
   queue.get_available_commands();
 

@@ -70,6 +70,10 @@
   #include "../../feature/spindle_laser.h"
 #endif
 
+#if ENABLED(FAN0_PICKUP_GUARD)
+  #include "../../feature/fan0_pickup_guard.h"
+#endif
+
 #define DEBUG_OUT ENABLED(DEBUG_LEVELING_FEATURE)
 #include "../../core/debug_out.h"
 
@@ -243,6 +247,14 @@
 void GcodeSuite::G28() {
   DEBUG_SECTION(log_G28, "G28", DEBUGGING(LEVELING));
   if (DEBUGGING(LEVELING)) log_machine_info();
+
+  #if ENABLED(FAN0_PICKUP_GUARD)
+    fan0_pickup_guard::monitor_and_latch();
+    if (fan0_pickup_guard::latched()) {
+      SERIAL_ERROR_MSG("G28 blocked: pickup safety latch is active (restart board to clear)");
+      return;
+    }
+  #endif
 
   #if ENABLED(MARLIN_DEV_MODE)
     if (parser.seen_test('S')) {

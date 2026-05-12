@@ -10,6 +10,8 @@ namespace fan0_pickup_guard {
 
   bool allow_fan0_speed(const uint16_t speed);
   bool move_allowed(const xyze_pos_t &dest);
+  void monitor_and_latch();
+  bool latched();
   void on_m810_start();
   void on_m810_end();
 

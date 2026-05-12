@@ -2026,6 +2026,8 @@
   #define FAN0_PICKUP_MIN_INDEX             0
   #define FAN0_PICKUP_MAX_INDEX             2
   #define FAN0_PICKUP_POSITION_TOLERANCE  1.0f   // (mm)
+  #define FAN0_PICKUP_SENSOR_PIN            32    // PC0 on this build
+  #define FAN0_PICKUP_SENSOR_ACTIVE_STATE LOW
 #endif
 
 /**

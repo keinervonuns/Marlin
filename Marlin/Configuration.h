@@ -2008,7 +2008,7 @@
 #define GRID_INDEX_MOVE
 #if ENABLED(GRID_INDEX_MOVE)
   #define GRID_INDEX_X_OFFSET   7.0f   // (mm)
-  #define GRID_INDEX_Y_OFFSET  16.0f   // (mm) +5mm start offset in Y
+  #define GRID_INDEX_Y_OFFSET  13.0f   // (mm) +5mm start offset in Y
   #define GRID_INDEX_X_SPACING 71.3f   // (mm)
   #define GRID_INDEX_Y_SPACING 96.2f   // (mm)
   #define GRID_INDEX_X_COUNT     11    // positions in X

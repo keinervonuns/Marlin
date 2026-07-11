@@ -23,6 +23,7 @@
 #include "../../inc/MarlinConfig.h"
 #include "../gcode.h"
 #include "../../module/motion.h" // for quickstop_stepper
+#include "../../module/temperature.h" // for set_fan_speed
 
 /**
  * M108: Stop the waiting for heaters in M109, M190, M303. Does not affect the target temperature.
@@ -33,8 +34,12 @@ void GcodeSuite::M108() {
 
 /**
  * M112: Full Shutdown
+ *
+ * Turn off vacuum pump relay (FAN1) before killing to prevent
+ * the pump from running indefinitely after an emergency stop.
  */
 void GcodeSuite::M112() {
+  thermalManager.set_fan_speed(1, 0);  // FAN1 off = vacuum pump relay off
   marlin.kill(FPSTR(M112_KILL_STR), nullptr, true);
 }
 
